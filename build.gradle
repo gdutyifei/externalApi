@@ -1,0 +1,42 @@
+group 'baiduAI'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:1.5.10.RELEASE"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'war'
+apply plugin: 'org.springframework.boot'
+
+jar {
+    baseName = 'baiduApi-rest-service'
+    version =  '0.1.0'
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-feign', version: '1.4.3.RELEASE'
+    compile group: 'com.alibaba', name: 'fastjson', version: '1.2.46'
+    compile 'org.projectlombok:lombok:1.16.18'
+    compile group: 'org.springframework', name: 'spring-tx', version: '4.3.12.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: '1.5.8.RELEASE'
+
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
