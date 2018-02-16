@@ -1,4 +1,4 @@
-group 'baiduAI'
+group 'external'
 version '1.0-SNAPSHOT'
 
 buildscript {
@@ -19,7 +19,7 @@ apply plugin: 'war'
 apply plugin: 'org.springframework.boot'
 
 jar {
-    baseName = 'baiduApi-rest-service'
+    baseName = 'externalApi-rest-service'
     version =  '0.1.0'
 }
 
@@ -37,6 +37,8 @@ dependencies {
     compile 'org.projectlombok:lombok:1.16.18'
     compile group: 'org.springframework', name: 'spring-tx', version: '4.3.12.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: '1.5.8.RELEASE'
+    compile 'com.easemob:rest-java-sdk:1.0.0'
+    compile 'ch.qos.logback:logback-classic:1.2.1'
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
