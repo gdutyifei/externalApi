@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping(value = "/api/baiduAI/", method = {RequestMethod.GET, RequestMethod.POST})
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+//@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class BaiduAIApi {
 
-    @NonNull
+    @Autowired
     private BaiduAIService baiduAIService;
 
     @RequestMapping("/facesetAdd")

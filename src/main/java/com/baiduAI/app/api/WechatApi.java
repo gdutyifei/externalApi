@@ -15,10 +15,10 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @RestController
 @RequestMapping(value = "/api/wechat/", method = {RequestMethod.GET, RequestMethod.POST})
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+//@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class WechatApi {
 
-    @NonNull
+    @Autowired
     private WechatService wechatService;
 
     @RequestMapping("/getOpenidByCode")

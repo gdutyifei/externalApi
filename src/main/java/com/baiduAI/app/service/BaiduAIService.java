@@ -2,12 +2,15 @@ package com.baiduAI.app.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.baiduAI.app.api.EasemobApi;
 import com.baiduAI.app.bean.BaiduAIBean;
 import com.baiduAI.app.sao.BaiduAISao;
 import com.baiduAI.app.util.Base64Util;
 import com.baiduAI.app.util.HttpUtil;
 import com.baiduAI.app.util.ImageUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -49,6 +52,8 @@ public class BaiduAIService {
     @Value("${https://aip.baidubce.com/rest/2.0/face/v2/faceset/user/update}")
     private String updateUrl;
 
+    public static final Logger logger = LoggerFactory.getLogger(BaiduAIService.class);
+
     /**
      * 人脸库注册
      * @return
@@ -62,16 +67,16 @@ public class BaiduAIService {
             JSONObject accessJson = JSONObject.parseObject(accessData);
             // 获取access_token
             String accessToken = accessJson.get("access_token").toString();
-            log.info(accessToken);
+            logger.info(accessToken);
             // 对前端返回的图片url进行处理
-            log.info("图片地址： " + imgUrl);
+            logger.info("图片地址： " + imgUrl);
             byte[] imgData = ImageUtils.getImgeHexString(imgUrl, "jpg");
             String imgStr = Base64Util.encode(imgData);
             String imgParam = URLEncoder.encode(imgStr, "UTF-8");
             String detectParam = "max_face_num=" + 1 + "&image=" + imgParam;
             // 调用人脸识别接口
             String detectData = HttpUtil.post(detectUrl, accessToken, detectParam);
-            log.info("检测人脸数据 + " + detectData);
+            logger.info("检测人脸数据 + " + detectData);
             JSONObject detectJson = JSONObject.parseObject(detectData);
             // 获取人脸数
             int faceNum = Integer.parseInt(detectJson.get("result_num").toString());
@@ -87,7 +92,7 @@ public class BaiduAIService {
                 // uid 使用openid
                 String addParam = "uid=" + openid + "&user_info=" + userInfo + "&group_id=" + groupId + "&image=" + imgParam;
                 String addData = HttpUtil.post(addUrl, accessToken, addParam);
-                log.info("添加人脸库返回数据： " + addData);
+                logger.info("添加人脸库返回数据： " + addData);
                 // JSONObject addJson = JSONObject.parseObject(addData);
                 result.put("code", "200");
                 result.put("data", addData);
@@ -118,7 +123,7 @@ public class BaiduAIService {
             JSONObject accessJson = JSONObject.parseObject(accessData);
             // 获取access_token
             String accessToken = accessJson.get("access_token").toString();
-            log.info(accessToken);
+            logger.info(accessToken);
             // 对前端返回的图片url进行处理
             byte[] imgData = ImageUtils.getImgeHexString(imgUrl, "jpg");
             String imgStr = Base64Util.encode(imgData);
@@ -126,7 +131,7 @@ public class BaiduAIService {
             String detectParam = "max_face_num=" + 1 + "&image=" + imgParam;
             // 调用人脸识别接口
             String detectData = HttpUtil.post(detectUrl, accessToken, detectParam);
-            log.info("检测人脸数据 + " + detectData);
+            logger.info("检测人脸数据 + " + detectData);
             JSONObject detectJson = JSONObject.parseObject(detectData);
             // 获取人脸数
             int faceNum = Integer.parseInt(detectJson.get("result_num").toString());
@@ -143,7 +148,7 @@ public class BaiduAIService {
                 String updateParam = "uid=" + openid + "&user_info=" + userInfo + "&group_id=" + groupId + "&image=" + imgParam + "&action_type=replace";
                 String updateData = HttpUtil.post(updateUrl, accessToken, updateParam);
 
-                log.info("更新人脸库返回数据： " + updateData);
+                logger.info("更新人脸库返回数据： " + updateData);
                 // JSONObject updateJson = JSONObject.parseObject(updateData);
                 result.put("code", "200");
                 result.put("data", updateData);
@@ -174,7 +179,7 @@ public class BaiduAIService {
             JSONObject accessJson = JSONObject.parseObject(accessData);
             // 获取access_token
             String accessToken = accessJson.get("access_token").toString();
-            log.info(accessToken);
+            logger.info(accessToken);
             // 对前端返回的图片url进行处理
             byte[] imgData = ImageUtils.getImgeHexString(imgUrl, "jpg");
             String imgStr = Base64Util.encode(imgData);
@@ -182,7 +187,7 @@ public class BaiduAIService {
             String detectParam = "max_face_num=" + 1 + "&image=" + imgParam;
             // 调用人脸识别接口
             String detectData = HttpUtil.post(detectUrl, accessToken, detectParam);
-            log.info("检测人脸返回数据 + " + detectData);
+            logger.info("检测人脸返回数据 + " + detectData);
             JSONObject detectJson = JSONObject.parseObject(detectData);
             // 获取人脸数
             int faceNum = Integer.parseInt(detectJson.get("result_num").toString());
@@ -199,7 +204,7 @@ public class BaiduAIService {
                 String identifyParam = "group_id=" + groupId + "&image=" + imgParam + "&user_top_num=" + 1;
                 String identifyData = HttpUtil.post(identifyUrl, accessToken, identifyParam);
 
-                log.info("人脸查找返回数据： " + identifyData);
+                logger.info("人脸查找返回数据： " + identifyData);
                 JSONObject identifyJson = JSONObject.parseObject(identifyData);
                 if (Integer.parseInt(identifyJson.get("result_num").toString()) == 1) {
                     // 说明找到人脸, 获取用户信息返回到前端

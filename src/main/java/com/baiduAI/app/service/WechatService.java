@@ -1,10 +1,13 @@
 package com.baiduAI.app.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baiduAI.app.api.EasemobApi;
 import com.baiduAI.app.sao.WxSao;
 import com.google.common.collect.ImmutableMap;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.RandomStringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -40,6 +43,8 @@ public class WechatService {
     @Value("${img.host}")
     private String imgHost;
 
+    public static final Logger logger = LoggerFactory.getLogger(WechatService.class);
+
     /**
      * 根据code获取openid
      * @param code
@@ -65,7 +70,7 @@ public class WechatService {
         String fileName = random + ".jpg";
         try {
             String uploadDirName = imgLocalPath.substring(imgLocalPath.lastIndexOf("/"), imgLocalPath.length());
-            log.info(uploadDirName);
+            logger.info(uploadDirName);
             FileCopyUtils.copy(file.getBytes(), new File(imgLocalPath + "/", fileName));
             return imgHost + uploadDirName + "/" + fileName;
         } catch (IOException e) {
@@ -73,22 +78,5 @@ public class WechatService {
         }
         return null;
     }
-
-//    @RequestMapping(value = "/api/v1/upload/image", method = RequestMethod.POST, produces = "application/json")
-//    public Map<String,Object> uploadImage(@RequestParam(required=true,value="file")MultipartFile file){
-//        if(null == file){
-//            return rtnParam(40010, null);
-//        }
-//        String random = RandomStringUtils.randomAlphabetic(16);
-//        String fileName = random + ".jpg";
-//        try {
-//            String uploadDirName = imgLocalPath.substring(imgLocalPath.lastIndexOf("/"), imgLocalPath.length());
-//            FileCopyUtils.copy(file.getBytes(), new File(imgLocalPath + "/", fileName));
-//            return rtnParam(0, ImmutableMap.of("url", imgHost + uploadDirName + "/" + fileName));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return rtnParam(40011, null);
-//    }
 
 }
