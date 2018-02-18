@@ -8,6 +8,7 @@ CREATE TABLE `product_info` (
     `product_name` VARCHAR(30) NULL DEFAULT NULL COMMENT '产品名' COLLATE 'utf8mb4_unicode_ci',
     `product_price` VARCHAR(20) NULL DEFAULT NULL COMMENT '产品价格' COLLATE 'utf8mb4_unicode_ci',
     `product_detail` MEDIUMTEXT COLLATE utf8mb4_unicode_ci COMMENT '产品详情',
+    `cover_url` VARCHAR(300) NULL DEFAULT NULL COMMENT '产品封面' COLLATE 'utf8mb4_unicode_ci',
     PRIMARY KEY (`id`)
 )
 COLLATE='utf8mb4_bin'
