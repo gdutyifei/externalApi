@@ -13,20 +13,24 @@ import javax.persistence.Table;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 @Entity
 @Table(name = "form_id_manage")
 public class FormIdDTO extends BaseDTO {
 
+    @NonNull
     @Column(name = "id")
     private Long id;
 
+    @NonNull
     @Column(name = "form_id")
     private String form_id;
 
+    @NonNull
     @Column(name = "openid")
     private String openid;
 
+    @NonNull
     @Column(name = "isused")
     private String isused;
 
