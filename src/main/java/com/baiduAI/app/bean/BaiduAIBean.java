@@ -73,4 +73,107 @@ public class BaiduAIBean {
      */
     private Integer user_top_num;
 
+    public String getGrant_type() {
+        return grant_type;
+    }
+
+    public void setGrant_type(String grant_type) {
+        this.grant_type = grant_type;
+    }
+
+    public String getClient_id() {
+        return client_id;
+    }
+
+    public void setClient_id(String client_id) {
+        this.client_id = client_id;
+    }
+
+    public String getClient_secret() {
+        return client_secret;
+    }
+
+    public void setClient_secret(String client_secret) {
+        this.client_secret = client_secret;
+    }
+
+    public String getAccess_token() {
+        return access_token;
+    }
+
+    public void setAccess_token(String access_token) {
+        this.access_token = access_token;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public Integer getMax_face_num() {
+        return max_face_num;
+    }
+
+    public void setMax_face_num(Integer max_face_num) {
+        this.max_face_num = max_face_num;
+    }
+
+    public String getFace_fields() {
+        return face_fields;
+    }
+
+    public void setFace_fields(String face_fields) {
+        this.face_fields = face_fields;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getGroup_id() {
+        return group_id;
+    }
+
+    public void setGroup_id(String group_id) {
+        this.group_id = group_id;
+    }
+
+    public String getUser_info() {
+        return user_info;
+    }
+
+    public void setUser_info(String user_info) {
+        this.user_info = user_info;
+    }
+
+    public String getAction_type() {
+        return action_type;
+    }
+
+    public void setAction_type(String action_type) {
+        this.action_type = action_type;
+    }
+
+    public String getExt_fields() {
+        return ext_fields;
+    }
+
+    public void setExt_fields(String ext_fields) {
+        this.ext_fields = ext_fields;
+    }
+
+    public Integer getUser_top_num() {
+        return user_top_num;
+    }
+
+    public void setUser_top_num(Integer user_top_num) {
+        this.user_top_num = user_top_num;
+    }
 }
