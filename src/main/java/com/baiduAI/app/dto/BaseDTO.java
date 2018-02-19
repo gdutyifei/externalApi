@@ -16,17 +16,17 @@ public class BaseDTO {
 
     @NonNull
     @Column(name = "created_date")
-    private LocalDateTime createdDate;
+    private LocalDateTime created_date;
 
     @NonNull
     @Column(name = "created_by")
-    private String createdBy;
+    private String created_by;
 
     @NonNull
     @Column(name = "updated_date")
-    private LocalDateTime updatedDate;
+    private LocalDateTime updated_date;
 
     @NonNull
     @Column(name = "updated_by")
-    private String updatedBy;
+    private String updated_by;
 }

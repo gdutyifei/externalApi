@@ -40,4 +40,9 @@ public class WechatApi {
                     @RequestParam(value = "url", required = false) String url) {
         return wechatService.sendTemplateMsg(openid, contentArr, templateMsgType, url);
     }
+
+    @RequestMapping("saveUserInfo")
+    public Map<String, Object> saveUserInfo(@RequestParam("userInfo") String userInfo, @RequestParam("code") String code) {
+        return wechatService.saveUserInfo(userInfo, code);
+    }
 }

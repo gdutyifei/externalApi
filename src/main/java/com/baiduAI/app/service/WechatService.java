@@ -1,27 +1,26 @@
 package com.baiduAI.app.service;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.baiduAI.app.api.EasemobApi;
 import com.baiduAI.app.bean.TemplateBean;
 import com.baiduAI.app.dao.FormIdInfoDAO;
-import com.baiduAI.app.dto.AccessToken;
+import com.baiduAI.app.dao.WechatInfoDAO;
 import com.baiduAI.app.dto.FormIdDTO;
+import com.baiduAI.app.dto.WechatDTO;
 import com.baiduAI.app.sao.WxSao;
 import com.baiduAI.app.util.WeChatSystemContext;
 import com.baiduAI.app.util.WeixinTemplateNotice;
-import com.google.common.collect.ImmutableMap;
-import lombok.NonNull;
+import io.swagger.client.model.RegisterUsers;
+import io.swagger.client.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -48,6 +47,12 @@ public class WechatService {
 
     @Autowired
     private WeChatSystemContext weChatSystemContext;
+
+    @Autowired
+    private WechatInfoDAO wechatInfoDAO;
+
+    @Autowired
+    private EasemobService easemobService;
 
     @Value("${wx.appid.c}")
     private String appid;
@@ -78,12 +83,53 @@ public class WechatService {
         try {
             String userStr = wxSao.getJscode2session(appid, appSecret, code, "authorization_code");
             JSONObject userInfo = JSONObject.parseObject(userStr);
-            String openid = userInfo.getString("openid");
+            // String openid = userInfo.getString("openid");
             // String session_key = userInfo.getString("session_key");
-            return openid;
+            return userStr;
         } catch (Exception e) {
             return e.toString();
         }
+    }
+
+    public Map<String, Object> saveUserInfo(@RequestParam("userInfo") String userInfo, @RequestParam("code") String code) {
+        Map<String, Object> returnMap = new HashMap<String, Object>();
+        logger.info(userInfo);
+        String loginInfo = this.getOpenidByCode(code);
+        if ("".equals(loginInfo) || null == loginInfo) {
+            returnMap.put("msg", "非法code");
+            return returnMap;
+        }
+        String unionId = "";
+        if (JSON.parseObject(loginInfo).get("unionid") != null ) {
+            unionId = JSON.parseObject(loginInfo).get("unionid").toString();
+        }
+        // String unionId = WxDecrypt.wxDecrypt(encryptedData, session_key, iv);
+        logger.info(unionId);
+        JSONObject jsonObject = JSON.parseObject(userInfo);
+        String openid = jsonObject.get("openid").toString();
+        String nickName = jsonObject.get("nickName").toString();
+        String avatarUrl = jsonObject.get("avatarUrl").toString();
+        String gender = StringUtils.equals(jsonObject.get("gender").toString(), "1") ? "male" : "female";
+        String city = jsonObject.get("city").toString();
+        String province = jsonObject.get("province").toString();
+        String country = jsonObject.get("country").toString();
+
+        WechatDTO wechatDTO = wechatInfoDAO.getWechatInfoByOpenid(openid);
+        if (wechatDTO == null) {
+            // 保存用户信息
+            wechatInfoDAO.saveWechatInfo(openid, nickName, avatarUrl, gender, city, province, country, unionId);
+            returnMap.put("msg", "保存用户信息成功");
+            // 注册环信用户
+            RegisterUsers users = new RegisterUsers();
+            User user = new User().username(openid).password(openid);
+            users.add(user);
+            Object easemobresult = easemobService.registerEasemobUser(users);
+            logger.info(easemobresult.toString());
+            // Assert.assertNotNull(easemobresult);
+            return returnMap;
+        }
+        returnMap.put("msg", "已经存在用户数据");
+        return returnMap;
     }
 
     /**
