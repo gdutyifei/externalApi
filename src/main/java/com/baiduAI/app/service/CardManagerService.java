@@ -56,6 +56,7 @@ public class CardManagerService {
         List<CardListDTO> cardList = cardListDAO.getCardListByOpenid(openid);
         returnMap.put("data", cardList);
         returnMap.put("msg", "获取名片列表成功");
+        returnMap.put("code", 200);
         return returnMap;
     }
 }
