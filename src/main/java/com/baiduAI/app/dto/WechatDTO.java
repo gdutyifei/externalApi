@@ -1,50 +1,81 @@
-package com.baiduAI.app.bean;
+package com.baiduAI.app.dto;
 
-import lombok.Data;
+import lombok.*;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * Created by luoyifei on 2018/2/10.
  */
 @Data
-public class WxBean {
+@EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
+@RequiredArgsConstructor
+@Entity
+@Table(name = "wechat_user_to_c")
+public class WechatDTO extends BaseDTO {
 
+    @NonNull
+    @Column(name = "id")
     private Long id;
 
     /**
      * 用户openid
      */
+    @NonNull
+    @Column(name = "openid")
     private String openid;
 
     /**
      * 用户昵称
      */
-    private String nickName;
+    @NonNull
+    @Column(name = "nick_name")
+    private String nick_name;
 
     /**
      * 用户头像，最后一个数值代表正方形头像大小（有0、46、64、96、132数值可选，0代表640*640正方形头像），用户没有头像时该项为空。若用户更换头像，原有头像URL将失效。
      */
-    private String avatarUrl;
+    @NonNull
+    @Column(name = "avatar_url")
+    private String avatar_url;
 
     /**
      * 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
      */
+    @NonNull
+    @Column(name = "gender")
     private String gender;
 
     /**
      * 用户所在城市
      */
+    @NonNull
+    @Column(name = "city")
     private String city;
 
     /**
      * 用户所在省份
      */
+    @NonNull
+    @Column(name = "province")
     private String province;
 
     /**
      * 用户所在国家
      */
+    @NonNull
+    @Column(name = "country")
     private String country;
 
+    @NonNull
+    @Column(name = "id")
+    private String unionId;
+
+    @Id
     public Long getId() {
         return id;
     }
@@ -61,20 +92,20 @@ public class WxBean {
         this.openid = openid;
     }
 
-    public String getNickName() {
-        return nickName;
+    public String getNick_name() {
+        return nick_name;
     }
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    public void setNick_name(String nick_name) {
+        this.nick_name = nick_name;
     }
 
-    public String getAvatarUrl() {
-        return avatarUrl;
+    public String getAvatar_url() {
+        return avatar_url;
     }
 
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
+    public void setAvatar_url(String avatar_url) {
+        this.avatar_url = avatar_url;
     }
 
     public String getGender() {
@@ -107,5 +138,13 @@ public class WxBean {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public String getUnionId() {
+        return unionId;
+    }
+
+    public void setUnionId(String unionId) {
+        this.unionId = unionId;
     }
 }
