@@ -13,7 +13,7 @@ CREATE TABLE `wechat_user_to_c` (
     `city` VARCHAR(10) NULL DEFAULT NULL COMMENT '微信所在城市' COLLATE 'utf8mb4_unicode_ci',
     `province` VARCHAR(10) NULL DEFAULT NULL COMMENT '微信所在省份' COLLATE 'utf8mb4_unicode_ci',
     `country` VARCHAR(10) NULL DEFAULT NULL COMMENT '微信所在国家' COLLATE 'utf8mb4_unicode_ci',
-    `role` VARCHAR(10) NULL DEFAULT NULL COMMENT '用户角色（顾客/职员）' COLLATE 'utf8mb4_unicode_ci',
+--    `role` VARCHAR(10) NULL DEFAULT NULL COMMENT '用户角色（顾客/职员）' COLLATE 'utf8mb4_unicode_ci',
     PRIMARY KEY (`id`)
 )
 COLLATE='utf8mb4_bin'
