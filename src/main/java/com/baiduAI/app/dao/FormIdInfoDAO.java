@@ -23,7 +23,7 @@ public interface FormIdInfoDAO {
     @Update("UPDATE form_id_info SET isused='Y' WHERE openid=#{openid} AND form_id=#{formId}")
     void updateFormInfo(@Param("openid") String openid, @Param("formId") String formId);
 
-    @Select("SELECT * FROM form_id_info WHERE openid = #{openid} AND isused = #{isused} ORDER BY created_date DESC LIMIT 1")
+    @Select("SELECT * FROM form_id_info WHERE openid = #{openid} AND isused = #{isused} AND DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= DATE(`created_date`) ORDER BY created_date DESC LIMIT 1")
     FormIdDTO findByOpenidAndIsusedOrderByCreatedDateDesc(@Param("openid") String openid, @Param("isused") String isused);
 
 }
