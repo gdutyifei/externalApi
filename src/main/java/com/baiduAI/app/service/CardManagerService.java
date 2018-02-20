@@ -79,6 +79,7 @@ public class CardManagerService {
                     data.put("email", salesInfoDTO.getEmail());
                     data.put("imageUrl", salesInfoDTO.getCover_url());
                     data.put("photos", salesInfoDTO.getPhotos());
+                    data.put("openid", salesInfoDTO.getOpenid());
                 }
                 totalData.add(data);
             }

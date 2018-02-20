@@ -5,6 +5,7 @@ CREATE TABLE `sales_info` (
     `created_date` DATETIME NULL DEFAULT NULL,
     `updated_by` VARCHAR(30) NULL DEFAULT NULL COLLATE 'utf8mb4_bin',
     `updated_date` DATETIME NULL DEFAULT NULL,
+    `openid` VARCHAR(50) NULL DEFAULT NULL COMMENT 'B端小程序微信openid（默认环信id和密码即为openid）' COLLATE 'utf8mb4_unicode_ci',
     `supp_id` INT(11) NOT NULL DEFAULT 0 COMMENT '对应的管理员id，默认为0',
     `name` VARCHAR(10) NULL DEFAULT NULL COMMENT '店员名' COLLATE 'utf8mb4_unicode_ci',
     `job` VARCHAR(10) NULL DEFAULT NULL COMMENT '职位' COLLATE 'utf8mb4_unicode_ci',

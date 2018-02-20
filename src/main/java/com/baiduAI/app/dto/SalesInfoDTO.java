@@ -24,7 +24,11 @@ public class SalesInfoDTO extends BaseDTO {
 
     @NonNull
     @Column(name = "supp_id")
-    private String supp_id;
+    private Integer supp_id;
+
+    @NonNull
+    @Column(name = "openid")
+    private String openid;
 
     @NonNull
     @Column(name = "name")
@@ -71,11 +75,11 @@ public class SalesInfoDTO extends BaseDTO {
         this.id = id;
     }
 
-    public String getSupp_id() {
+    public Integer getSupp_id() {
         return supp_id;
     }
 
-    public void setSupp_id(String supp_id) {
+    public void setSupp_id(Integer supp_id) {
         this.supp_id = supp_id;
     }
 
@@ -149,5 +153,13 @@ public class SalesInfoDTO extends BaseDTO {
 
     public void setPhotos(String photos) {
         this.photos = photos;
+    }
+
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
     }
 }
