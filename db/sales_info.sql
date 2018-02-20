@@ -11,6 +11,7 @@ CREATE TABLE `sales_info` (
     `store` VARCHAR(80) NULL DEFAULT NULL COMMENT '门店' COLLATE 'utf8mb4_unicode_ci',
     `tel` VARCHAR(20) NULL DEFAULT NULL COMMENT '手机号码' COLLATE 'utf8mb4_unicode_ci',
     `wechat` VARCHAR(20) NULL DEFAULT NULL COMMENT '微信号' COLLATE 'utf8mb4_unicode_ci',
+    `email` VARCHAR(50) NULL DEFAULT NULL COMMENT 'email' COLLATE 'utf8mb4_unicode_ci',
     `location` VARCHAR(50) NULL DEFAULT NULL COMMENT '店址' COLLATE 'utf8mb4_unicode_ci',
     `cover_url` VARCHAR(300) NULL DEFAULT NULL COMMENT '头像url' COLLATE 'utf8mb4_unicode_ci',
     `photos` MEDIUMTEXT COLLATE utf8mb4_unicode_ci COMMENT '图片url（以,隔开）',
