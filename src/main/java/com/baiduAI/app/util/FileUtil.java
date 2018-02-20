@@ -69,4 +69,33 @@ public class FileUtil {
             }
         }
     }
+
+    /**
+     * 通过数据流保存图片
+     * @param instreams
+     * @param imgPath
+     * @param imgName
+     * @return
+     */
+    public static int saveToImgByInputStream(InputStream instreams, String imgPath, String imgName) {
+        int stateInt = 1;
+        if (instreams != null) {
+            try {
+                File file = new File(imgPath, imgName);//可以是任何图片格式.jpg,.png等
+                FileOutputStream fos = new FileOutputStream(file);
+                byte[] b = new byte[1024];
+                int nRead = 0;
+                while ((nRead = instreams.read(b)) != -1) {
+                    fos.write(b, 0, nRead);
+                }
+                fos.flush();
+                fos.close();
+            } catch (Exception e) {
+                stateInt = 0;
+                e.printStackTrace();
+            } finally {
+            }
+        }
+        return stateInt;
+    }
 }

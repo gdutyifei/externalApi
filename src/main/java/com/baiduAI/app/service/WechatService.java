@@ -3,18 +3,22 @@ package com.baiduAI.app.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baiduAI.app.bean.TemplateBean;
+import com.baiduAI.app.bean.WxCodeBean;
 import com.baiduAI.app.dao.FormIdInfoDAO;
 import com.baiduAI.app.dao.WechatInfoDAO;
 import com.baiduAI.app.dto.FormIdDTO;
 import com.baiduAI.app.dto.WechatDTO;
 import com.baiduAI.app.sao.WxSao;
+import com.baiduAI.app.util.FileUtil;
 import com.baiduAI.app.util.WeChatSystemContext;
 import com.baiduAI.app.util.WeixinTemplateNotice;
 import io.swagger.client.model.RegisterUsers;
 import io.swagger.client.model.User;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +28,7 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -91,6 +94,12 @@ public class WechatService {
         }
     }
 
+    /**
+     * 保存用户微信信息
+     * @param userInfo
+     * @param code
+     * @return
+     */
     public Map<String, Object> saveUserInfo(@RequestParam("userInfo") String userInfo, @RequestParam("code") String code) {
         Map<String, Object> returnMap = new HashMap<String, Object>();
         logger.info(userInfo);
@@ -100,7 +109,7 @@ public class WechatService {
             return returnMap;
         }
         String unionId = "";
-        if (JSON.parseObject(loginInfo).get("unionid") != null ) {
+        if (JSON.parseObject(loginInfo).get("unionid") != null) {
             unionId = JSON.parseObject(loginInfo).get("unionid").toString();
         }
         // String unionId = WxDecrypt.wxDecrypt(encryptedData, session_key, iv);
@@ -157,6 +166,7 @@ public class WechatService {
 
     /**
      * 发送模板消息
+     *
      * @param openid
      * @param contentArr
      * @param templateMsgType
@@ -233,5 +243,35 @@ public class WechatService {
         String json = wxSao.send(access_token, templateBean);
         return json;
     }
+
+    /**
+     * 获取带参数二维码
+     *
+     * @param scene
+     * @param page
+     * @return
+     */
+    public String getwxacode(@Param("scene") String scene, @Param("page") String page) {
+        logger.info("scene: " + scene);
+        String access_token = weChatSystemContext.getAccessToken();
+        logger.info("access_token: {}", access_token);
+        WxCodeBean wxCodeBean = new WxCodeBean();
+        wxCodeBean.setScene(scene);
+        wxCodeBean.setAuto_color(true);
+        wxCodeBean.setPage(page);
+        wxCodeBean.setWidth(430);
+        String jsonStr = JSONObject.toJSONString(wxCodeBean);
+        logger.info(jsonStr);
+        byte[] json = wxSao.getwxacode(access_token, wxCodeBean);
+        // logger.info(json);
+        InputStream inputStream = new ByteArrayInputStream(json);
+        String uploadDirName = imgLocalPath.substring(imgLocalPath.lastIndexOf("/"), imgLocalPath.length());
+        String random = RandomStringUtils.randomAlphanumeric(16);
+        String fileName = random + ".jpg";
+        FileUtil.saveToImgByInputStream(inputStream, imgLocalPath + "/", fileName);
+
+        return imgHost + uploadDirName + "/" + fileName;
+    }
+
 
 }

@@ -3,6 +3,7 @@ package com.baiduAI.app.api;
 import com.baiduAI.app.service.WechatService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,7 +17,7 @@ import java.util.Map;
  * Created by luoyifei on 2018/2/10.
  */
 @RestController
-@RequestMapping(value = "/api/wechat/", method = {RequestMethod.GET, RequestMethod.POST})
+@RequestMapping(value = "/api/wechat", method = {RequestMethod.GET, RequestMethod.POST})
 //@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class WechatApi {
 
@@ -33,7 +34,7 @@ public class WechatApi {
         return wechatService.uploadImage(file);
     }
 
-    @RequestMapping("sendTemplateMsg")
+    @RequestMapping("/sendTemplateMsg")
     public Map<String, Object> sendTemplateMsg(@RequestParam(value = "openid", required = false) String openid,
                     @RequestParam(value = "contentArr", required = false) String[] contentArr,
                     @RequestParam(value = "templateMsgType", required = false) String templateMsgType,
@@ -41,8 +42,13 @@ public class WechatApi {
         return wechatService.sendTemplateMsg(openid, contentArr, templateMsgType, url);
     }
 
-    @RequestMapping("saveUserInfo")
+    @RequestMapping("/saveUserInfo")
     public Map<String, Object> saveUserInfo(@RequestParam("userInfo") String userInfo, @RequestParam("code") String code) {
         return wechatService.saveUserInfo(userInfo, code);
+    }
+
+    @RequestMapping("/getwxacode")
+    public String getwxacode(@Param("scene") String scene, @Param("page") String page) {
+        return wechatService.getwxacode(scene, page);
     }
 }
