@@ -179,23 +179,25 @@ public class WechatService {
         // 查找7天内可用的formId
         FormIdDTO formIdDTO = formIdInfoDAO.findByOpenidAndIsusedOrderByCreatedDateDesc(openid, "N");
         if (formIdDTO == null) {
+            returnMap.put("code", 400);
             returnMap.put("msg", "无可用formId");
             return returnMap;
         }
         String formId = formIdDTO.getForm_id();
-        bean.setForm_id(formId);
-        beanFour.setForm_id(formId);
-        beanFive.setForm_id(formId);
+
         if (contentArr.length == 3) {
+            bean.setForm_id(formId);
             bean.setKeyword1(contentArr[0]);
             bean.setKeyword2(contentArr[1]);
             bean.setKeyword3(contentArr[2]);
         } else if (contentArr.length == 4) {
+            beanFour.setForm_id(formId);
             beanFour.setKeyword1(contentArr[0]);
             beanFour.setKeyword2(contentArr[1]);
             beanFour.setKeyword3(contentArr[2]);
             beanFour.setKeyword4(contentArr[3]);
         } else if (contentArr.length == 5) {
+            beanFive.setForm_id(formId);
             beanFive.setKeyword1(contentArr[0]);
             beanFive.setKeyword2(contentArr[1]);
             beanFive.setKeyword3(contentArr[2]);
@@ -204,8 +206,10 @@ public class WechatService {
         }
         TemplateBean td = new TemplateBean();
         if ("consult".equals(templateMsgType)) {
-            beanFour.setTemplate_id(consult_notice_tempid);
-            td = WeixinTemplateNotice.sendCommonFourNotice(beanFour);
+            // 咨询模板
+            logger.info("模板id为： {}", consult_notice_tempid);
+            beanFive.setTemplate_id(consult_notice_tempid);
+            td = WeixinTemplateNotice.sendCommonFiveNotice(beanFive);
         }
         String access_token = weChatSystemContext.getAccessToken();
         String json = send(access_token, td);
@@ -215,8 +219,10 @@ public class WechatService {
             //2、然后翻转formID的状态
             formIdInfoDAO.updateFormInfo(openid, formId);
             logger.info("向{}发送了模板消息返回：{}", openid, bean);
+            returnMap.put("code", 200);
             returnMap.put("msg", "消息推送成功");
         } else {
+            returnMap.put("code", 9999);
             returnMap.put("msg", json);
         }
 

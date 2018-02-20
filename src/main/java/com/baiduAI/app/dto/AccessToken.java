@@ -23,23 +23,23 @@ public class AccessToken extends BaseDTO {
 
     @NonNull
     @Column(name = "access_token")
-    private String accessToken;
+    private String access_token;
 
     @NonNull
     @Column(name = "created_date")
-    private LocalDateTime createdDate;
+    private LocalDateTime created_date;
 
     @NonNull
     @Column(name = "created_by")
-    private String createdBy;
+    private String created_by;
 
     @NonNull
     @Column(name = "updated_date")
-    private LocalDateTime updatedDate;
+    private LocalDateTime updated_date;
 
     @NonNull
     @Column(name = "updated_by")
-    private String updatedBy;
+    private String updated_by;
 
     @Id
     public Long getId() {
@@ -50,46 +50,44 @@ public class AccessToken extends BaseDTO {
         this.id = id;
     }
 
-    public String getAccessToken() {
-        return accessToken;
+
+    public String getAccess_token() {
+        return access_token;
     }
 
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
+    public void setAccess_token(String access_token) {
+        this.access_token = access_token;
     }
 
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
+    public LocalDateTime getCreated_date() {
+        return created_date;
     }
 
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
+    public void setCreated_date(LocalDateTime created_date) {
+        this.created_date = created_date;
     }
 
-    public String getCreatedBy() {
-        return createdBy;
+    public String getCreated_by() {
+        return created_by;
     }
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
+    public void setCreated_by(String created_by) {
+        this.created_by = created_by;
     }
 
-    public LocalDateTime getUpdatedDate() {
-        return updatedDate;
+    public LocalDateTime getUpdated_date() {
+        return updated_date;
     }
 
-    public void setUpdatedDate(LocalDateTime updatedDate) {
-        this.updatedDate = updatedDate;
+    public void setUpdated_date(LocalDateTime updated_date) {
+        this.updated_date = updated_date;
     }
 
-    public String getUpdatedBy() {
-        return updatedBy;
+    public String getUpdated_by() {
+        return updated_by;
     }
 
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
+    public void setUpdated_by(String updated_by) {
+        this.updated_by = updated_by;
     }
-
-
-// private int expires_in;
 }
