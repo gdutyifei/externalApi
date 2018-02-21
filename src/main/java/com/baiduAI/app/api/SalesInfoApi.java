@@ -20,7 +20,7 @@ public class SalesInfoApi {
     private SalesInfoService salesInfoService;
 
     @RequestMapping("/getSalesInfoBySalesId")
-    public Map<String, Object> getSalesInfoBySalesId(@RequestParam("salesId") Long salesId) {
-        return salesInfoService.getSalesInfoBySalesId(salesId);
+    public Map<String, Object> getSalesInfoBySalesId(@RequestParam("salesId") Long salesId, @RequestParam("openid") String openid) throws Exception {
+        return salesInfoService.getSalesInfoBySalesId(salesId, openid);
     }
 }

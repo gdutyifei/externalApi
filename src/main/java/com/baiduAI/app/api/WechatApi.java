@@ -1,20 +1,14 @@
 package com.baiduAI.app.api;
 
-import com.baiduAI.app.config.RedisClient;
 import com.baiduAI.app.service.WechatService;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
 import java.util.Map;
 
 /**
@@ -27,9 +21,6 @@ public class WechatApi {
 
     @Autowired
     private WechatService wechatService;
-
-    @Resource
-    private RedisTemplate<String, Object> redisTemplate;
 
     @RequestMapping("/getOpenidByCode")
     public String getOpenidByCode(@RequestParam(value = "code", required = true) String code) throws Exception {
@@ -57,18 +48,5 @@ public class WechatApi {
     @RequestMapping("/getwxacode")
     public String getwxacode(@Param("scene") String scene, @Param("page") String page) {
         return wechatService.getwxacode(scene, page);
-    }
-
-    @RequestMapping("/set")
-    public String set(String key, String value) throws Exception{
-        ValueOperations<String, Object> valueOperations = redisTemplate.opsForValue();
-        valueOperations.set("test", "1");
-        return "success";
-    }
-
-    @RequestMapping("/get")
-    public String get(String key) throws Exception {
-        // return redisClinet.get(key);
-        return null;
     }
 }
