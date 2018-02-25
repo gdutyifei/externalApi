@@ -5,7 +5,6 @@ import com.baiduAI.app.dao.SalesInfoDAO;
 import com.baiduAI.app.dto.CardListDTO;
 import com.baiduAI.app.dto.SalesInfoDTO;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
