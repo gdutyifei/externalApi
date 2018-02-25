@@ -113,7 +113,7 @@ public class WechatService {
             unionId = JSON.parseObject(loginInfo).get("unionid").toString();
         }
         // String unionId = WxDecrypt.wxDecrypt(encryptedData, session_key, iv);
-        logger.info(unionId);
+        logger.info("unionId: " + unionId);
         JSONObject jsonObject = JSON.parseObject(userInfo);
         String openid = jsonObject.get("openid").toString();
         String nickName = jsonObject.get("nickName").toString();
