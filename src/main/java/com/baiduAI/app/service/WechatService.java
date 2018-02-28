@@ -8,6 +8,7 @@ import com.baiduAI.app.dao.FormIdInfoDAO;
 import com.baiduAI.app.dao.WechatInfoDAO;
 import com.baiduAI.app.dto.FormIdDTO;
 import com.baiduAI.app.dto.WechatDTO;
+import com.baiduAI.app.dto.WechatDTOToB;
 import com.baiduAI.app.sao.WxSao;
 import com.baiduAI.app.util.FileUtil;
 import com.baiduAI.app.util.WeChatSystemContext;
@@ -58,10 +59,16 @@ public class WechatService {
     private EasemobService easemobService;
 
     @Value("${wx.appid.c}")
-    private String appid;
+    private String appid_c;
 
     @Value("${wx.appsecret.c}")
-    private String appSecret;
+    private String appSecret_c;
+
+    @Value("${wx.appid.b}")
+    private String appid_b;
+
+    @Value("${wx.appsecret.b}")
+    private String appSecret_b;
 
     @Value("${img.local.path}")
     private String imgLocalPath;
@@ -82,9 +89,14 @@ public class WechatService {
      * @param code
      * @return
      */
-    public String getOpenidByCode(@RequestParam("code") String code) {
+    public String getOpenidByCode(@RequestParam("code") String code, @RequestParam("type") String type) {
         try {
-            String userStr = wxSao.getJscode2session(appid, appSecret, code, "authorization_code");
+            String userStr = "";
+            if (StringUtils.equals(type, "B")) {
+                userStr = wxSao.getJscode2session(appid_c, appSecret_c, code, "authorization_code");
+            } else {
+                userStr = wxSao.getJscode2session(appid_c, appSecret_c, code, "authorization_code");
+            }
             JSONObject userInfo = JSONObject.parseObject(userStr);
             // String openid = userInfo.getString("openid");
             // String session_key = userInfo.getString("session_key");
@@ -100,10 +112,10 @@ public class WechatService {
      * @param code
      * @return
      */
-    public Map<String, Object> saveUserInfo(@RequestParam("userInfo") String userInfo, @RequestParam("code") String code) {
+    public Map<String, Object> saveUserInfo(@RequestParam("userInfo") String userInfo, @RequestParam("code") String code, @RequestParam("type") String type) {
         Map<String, Object> returnMap = new HashMap<String, Object>();
         logger.info(userInfo);
-        String loginInfo = this.getOpenidByCode(code);
+        String loginInfo = this.getOpenidByCode(code, type);
         if ("".equals(loginInfo) || null == loginInfo) {
             returnMap.put("msg", "非法code");
             return returnMap;
@@ -123,22 +135,42 @@ public class WechatService {
         String province = jsonObject.get("province").toString();
         String country = jsonObject.get("country").toString();
 
-        WechatDTO wechatDTO = wechatInfoDAO.getWechatInfoByOpenid(openid);
-        if (wechatDTO == null) {
-            // 保存用户信息
-            wechatInfoDAO.saveWechatInfo(openid, nickName, avatarUrl, gender, city, province, country, unionId);
-            returnMap.put("msg", "保存用户信息成功");
-            // 注册环信用户
-            RegisterUsers users = new RegisterUsers();
-            User user = new User().username(openid).password(openid);
-            users.add(user);
-            Object easemobresult = easemobService.registerEasemobUser(users);
-            logger.info(easemobresult.toString());
-            // Assert.assertNotNull(easemobresult);
+        if (StringUtils.equals(type, "C")) {
+            WechatDTO wechatDTO = wechatInfoDAO.getWechatInfoByOpenid(openid);
+            if (wechatDTO == null) {
+                // 保存用户信息
+                wechatInfoDAO.saveWechatInfo(openid, nickName, avatarUrl, gender, city, province, country, unionId);
+                returnMap.put("msg", "保存用户信息成功");
+                // 注册环信用户
+                RegisterUsers users = new RegisterUsers();
+                User user = new User().username(openid).password(openid);
+                users.add(user);
+                Object easemobresult = easemobService.registerEasemobUser(users);
+                logger.info(easemobresult.toString());
+                // Assert.assertNotNull(easemobresult);
+                return returnMap;
+            }
+            returnMap.put("msg", "已经存在用户数据");
+            return returnMap;
+        } else {
+            WechatDTOToB wechatDTO = wechatInfoDAO.getBWechatInfoByOpenid(openid);
+            if (wechatDTO == null) {
+                // 保存用户信息
+                wechatInfoDAO.saveBWechatInfo(openid, nickName, avatarUrl, gender, city, province, country, unionId);
+                returnMap.put("msg", "保存用户信息成功");
+                // 注册环信用户
+                RegisterUsers users = new RegisterUsers();
+                User user = new User().username(openid).password(openid);
+                users.add(user);
+                Object easemobresult = easemobService.registerEasemobUser(users);
+                logger.info(easemobresult.toString());
+                // Assert.assertNotNull(easemobresult);
+                return returnMap;
+            }
+            returnMap.put("msg", "已经存在用户数据");
             return returnMap;
         }
-        returnMap.put("msg", "已经存在用户数据");
-        return returnMap;
+
     }
 
     /**
@@ -173,7 +205,7 @@ public class WechatService {
      * @param url
      * @return
      */
-    public Map<String, Object> sendTemplateMsg(String openid, String[] contentArr, String templateMsgType, String url) {
+    public Map<String, Object> sendTemplateMsg(String openid, String[] contentArr, String templateMsgType, String url, String tokenType) {
         Map<String, Object> returnMap = new HashMap<String, Object>();
 
         WeixinTemplateNotice.CommonNoticeBean bean = new WeixinTemplateNotice().new CommonNoticeBean();
@@ -221,7 +253,7 @@ public class WechatService {
             beanFive.setTemplate_id(consult_notice_tempid);
             td = WeixinTemplateNotice.sendCommonFiveNotice(beanFive);
         }
-        String access_token = weChatSystemContext.getAccessToken();
+        String access_token = weChatSystemContext.getAccessToken(tokenType);
         String json = send(access_token, td);
         logger.info("根据token:{}发送模板消息:{}，结果是{}", access_token, td, json);
         JSONObject jo = JSONObject.parseObject(json);
@@ -253,7 +285,7 @@ public class WechatService {
      */
     public String getwxacode(@Param("scene") String scene, @Param("page") String page) {
         logger.info("scene: " + scene);
-        String access_token = weChatSystemContext.getAccessToken();
+        String access_token = weChatSystemContext.getAccessToken("B");
         logger.info("access_token: {}", access_token);
         WxCodeBean wxCodeBean = new WxCodeBean();
         wxCodeBean.setScene(scene);

@@ -65,8 +65,10 @@ public class CardManagerService {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         if (cardList != null && cardList.size() > 0) {
             for (CardListDTO cardListDTO: cardList) {
+                logger.info(cardListDTO.toString());
                 data.put("id", cardListDTO.getId());
-                data.put("date", cardListDTO.getFollow_date().format(dtf));
+                // data.put("date", cardListDTO.getFollow_date().format(dtf));
+                data.put("date", cardListDTO.getFollow_date());
                 data.put("way", cardListDTO.getWay());
                 Long salesId = cardListDTO.getSales_id();
                 SalesInfoDTO salesInfoDTO = salesInfoDAO.getSalesInfoBySalesId(salesId);

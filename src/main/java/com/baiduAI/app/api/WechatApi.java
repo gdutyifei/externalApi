@@ -23,8 +23,8 @@ public class WechatApi {
     private WechatService wechatService;
 
     @RequestMapping("/getOpenidByCode")
-    public String getOpenidByCode(@RequestParam(value = "code", required = true) String code) throws Exception {
-        return wechatService.getOpenidByCode(code);
+    public String getOpenidByCode(@RequestParam(value = "code", required = true) String code, @RequestParam(value = "type", required = true) String type) throws Exception {
+        return wechatService.getOpenidByCode(code, type);
     }
 
     @RequestMapping("/uploadImage")
@@ -36,13 +36,13 @@ public class WechatApi {
     public Map<String, Object> sendTemplateMsg(@RequestParam(value = "openid", required = false) String openid,
                     @RequestParam(value = "contentArr", required = false) String[] contentArr,
                     @RequestParam(value = "templateMsgType", required = false) String templateMsgType,
-                    @RequestParam(value = "url", required = false) String url) {
-        return wechatService.sendTemplateMsg(openid, contentArr, templateMsgType, url);
+                    @RequestParam(value = "url", required = false) String url, @RequestParam(value = "token_type", required = false) String token_type) {
+        return wechatService.sendTemplateMsg(openid, contentArr, templateMsgType, url, token_type);
     }
 
     @RequestMapping("/saveUserInfo")
-    public Map<String, Object> saveUserInfo(@RequestParam("userInfo") String userInfo, @RequestParam("code") String code) {
-        return wechatService.saveUserInfo(userInfo, code);
+    public Map<String, Object> saveUserInfo(@RequestParam("userInfo") String userInfo, @RequestParam("code") String code, @RequestParam("type") String type) {
+        return wechatService.saveUserInfo(userInfo, code, type);
     }
 
     @RequestMapping("/getwxacode")

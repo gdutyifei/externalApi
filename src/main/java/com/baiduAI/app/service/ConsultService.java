@@ -42,7 +42,7 @@ public class ConsultService {
         contentArr[3] = content;
         contentArr[4] = df.format(new Date());
         // 发送模板消息
-        Map<String, Object> templateMsg = wechatService.sendTemplateMsg(salesOpenid, contentArr, "consult", "");
+        Map<String, Object> templateMsg = wechatService.sendTemplateMsg(salesOpenid, contentArr, "consult", "", "B");
         logger.info("发送模板消息返回接口： {}", templateMsg);
         if (StringUtils.equals(templateMsg.get("code").toString(), "200")) {
             returnMap.put("code", 200);

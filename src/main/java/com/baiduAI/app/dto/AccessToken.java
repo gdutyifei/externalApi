@@ -26,6 +26,10 @@ public class AccessToken extends BaseDTO {
     private String access_token;
 
     @NonNull
+    @Column(name = "token_type")
+    private String token_type;
+
+    @NonNull
     @Column(name = "created_date")
     private LocalDateTime created_date;
 
@@ -57,6 +61,14 @@ public class AccessToken extends BaseDTO {
 
     public void setAccess_token(String access_token) {
         this.access_token = access_token;
+    }
+
+    public String getToken_type() {
+        return token_type;
+    }
+
+    public void setToken_type(String token_type) {
+        this.token_type = token_type;
     }
 
     public LocalDateTime getCreated_date() {

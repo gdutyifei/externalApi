@@ -56,15 +56,15 @@ public class WeChatSystemContext {
 
 
     //是否过期
-    public boolean isExpired() {
-        AccessToken accessTokenInfo = accessTokenDAO.getAccessTokenFromDb();
+    public boolean isExpired(String tokenType) {
+        AccessToken accessTokenInfo = accessTokenDAO.getAccessTokenFromDb(tokenType);
         // 说明表中无记录
         if (accessTokenInfo == null) {
             String getAccessTokenFromWxJsonStr = wxSao.getAccessToken(appid, appSecret, "client_credential");
             logger.info("poster微信返回数据：{}", getAccessTokenFromWxJsonStr);
             JSONObject jo = JSONObject.parseObject(getAccessTokenFromWxJsonStr);
             accessToken = jo.get("access_token").toString();
-            accessTokenDAO.saveAccessToken(accessToken);
+            accessTokenDAO.saveAccessToken(accessToken, tokenType);
         } else {
             long updatedTime = Date.from(accessTokenInfo.getUpdated_date().atZone(ZoneId.systemDefault()).toInstant()).getTime();
             long time = new Date().getTime();
@@ -104,14 +104,14 @@ public class WeChatSystemContext {
 
     }
 
-    public String getAccessToken() {
-        if (isExpired()) {
+    public String getAccessToken(String tokenType) {
+        if (isExpired(tokenType)) {
             // 如果过期
             String getAccessTokenFromWxJsonStr = wxSao.getAccessToken(appid, appSecret, "client_credential");
             logger.info("poster微信返回数据：{}", getAccessTokenFromWxJsonStr);
             JSONObject jo = JSONObject.parseObject(getAccessTokenFromWxJsonStr);
             accessToken = jo.get("access_token").toString();
-            accessTokenDAO.updateAccessToken(accessToken);
+            accessTokenDAO.updateAccessToken(accessToken, tokenType);
         }
 
         return accessToken;
