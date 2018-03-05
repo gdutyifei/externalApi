@@ -20,12 +20,17 @@ public class CardListApi {
     private CardManagerService cardManagerService;
 
     @RequestMapping("/saveCardToList")
-    public Map<String, Object> saveCardToList(@RequestParam("openid") String openid, @RequestParam("salesId") Long salesId, @RequestParam("way") String way) throws Exception {
-        return cardManagerService.saveCardToList(openid, salesId, way);
+    public Map<String, Object> saveCardToList(@RequestParam("openid") String openid, @RequestParam("salesId") Long salesId, @RequestParam("way") int way, @RequestParam("relay_name") String relay_name) throws Exception {
+        return cardManagerService.saveCardToList(openid, salesId, way, relay_name);
     }
 
     @RequestMapping("/getCardListByOpenid")
     public Map<String, Object> getCardListByOpenid(@RequestParam("openid") String openid) throws Exception {
         return cardManagerService.getCardListByOpenid(openid);
+    }
+
+    @RequestMapping("/saveCardToListTemp")
+    public void saveCardToListTemp(@RequestParam("openid") String openid) throws Exception {
+        cardManagerService.saveCardToListTemp(openid);
     }
 }

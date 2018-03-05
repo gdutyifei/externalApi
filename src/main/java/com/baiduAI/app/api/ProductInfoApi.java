@@ -1,6 +1,5 @@
 package com.baiduAI.app.api;
 
-import com.baiduAI.app.dao.ProductInfoDAO;
 import com.baiduAI.app.service.ProductInfoService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import sun.rmi.runtime.Log;
 
 import java.util.Map;
 
@@ -23,8 +21,8 @@ public class ProductInfoApi {
     private ProductInfoService productInfoService;
 
     @RequestMapping("/getProductListByOpenid")
-    public Map<String, Object> getProductListByOpenid(@RequestParam("openid") String openid) {
-        return productInfoService.getProductListByOpenid(openid);
+    public Map<String, Object> getProductListByOpenid(@RequestParam("salesOpenid") String salesOpenid, @RequestParam("sales_id") Long sales_id, @RequestParam("openid") String openid) {
+        return productInfoService.getProductListByOpenid(salesOpenid, sales_id, openid);
     }
 
     @RequestMapping("/saveProductInfo")

@@ -1,7 +1,10 @@
 package com.baiduAI.app.service;
 
 import com.baiduAI.app.dao.ProductInfoDAO;
+import com.baiduAI.app.dao.RankProductReadDetailDAO;
+import com.baiduAI.app.dao.WechatInfoDAO;
 import com.baiduAI.app.dto.ProductInfoDTO;
+import com.baiduAI.app.dto.WechatDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
@@ -27,14 +30,29 @@ public class ProductInfoService {
     @Autowired
     private ProductInfoDAO productInfoDAO;
 
+    @Autowired
+    private RankProductReadDetailDAO rankProductReadDetailDAO;
+
+    @Autowired
+    private WechatInfoDAO wechatInfoDAO;
+
     /**
      * 根据B端用户openid获取产品列表
      * @param openid
      * @return
      */
-    public Map<String, Object> getProductListByOpenid(@RequestParam("openid") String openid) {
+    public Map<String, Object> getProductListByOpenid(@RequestParam("salesOpenid") String salesOpenid, @RequestParam("sales_id") Long sales_id, @RequestParam("openid") String openid) {
         Map<String, Object> returnMap = new HashMap<String, Object>();
-        List<ProductInfoDTO> productList = productInfoDAO.getProductListByOpenid(openid);
+        List<ProductInfoDTO> productList = productInfoDAO.getProductListByOpenid(salesOpenid);
+        // 保存产品列表查看次数记录
+        WechatDTO wechatDTO = wechatInfoDAO.getWechatInfoByOpenid(openid);
+        if (wechatDTO == null) {
+            returnMap.put("code", 9999);
+            returnMap.put("msg", "找不到C端用户信息");
+            return returnMap;
+        }
+        Long cuesrId = wechatDTO.getId();
+        rankProductReadDetailDAO.saveProductReadDetail(openid, cuesrId, sales_id);
         returnMap.put("code", 200);
         returnMap.put("msg", "获取产品列表成功");
         returnMap.put("data", productList);

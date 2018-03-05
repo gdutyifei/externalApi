@@ -4,12 +4,14 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baiduAI.app.bean.TemplateBean;
 import com.baiduAI.app.bean.WxCodeBean;
+import com.baiduAI.app.dao.CardListDAO;
 import com.baiduAI.app.dao.FormIdInfoDAO;
 import com.baiduAI.app.dao.WechatInfoDAO;
 import com.baiduAI.app.dto.FormIdDTO;
 import com.baiduAI.app.dto.WechatDTO;
 import com.baiduAI.app.dto.WechatDTOToB;
 import com.baiduAI.app.sao.WxSao;
+import com.baiduAI.app.util.EmojiUtil;
 import com.baiduAI.app.util.FileUtil;
 import com.baiduAI.app.util.WeChatSystemContext;
 import com.baiduAI.app.util.WeixinTemplateNotice;
@@ -58,6 +60,9 @@ public class WechatService {
     @Autowired
     private EasemobService easemobService;
 
+    @Autowired
+    private CardListDAO cardListDAO;
+
     @Value("${wx.appid.c}")
     private String appid_c;
 
@@ -82,6 +87,14 @@ public class WechatService {
     @Value("${wx.micropro.consult.tempid}")
     private String consult_notice_tempid;
 
+    /**
+     * 根据openid获取C端用户微信信息
+     * @param openid
+     * @return
+     */
+    public WechatDTO getWechatDTOInfoByOpenid(@RequestParam("openid") String openid) {
+        return wechatInfoDAO.getWechatInfoByOpenid(openid);
+    }
 
     /**
      * 根据code获取openid
@@ -126,6 +139,7 @@ public class WechatService {
         }
         // String unionId = WxDecrypt.wxDecrypt(encryptedData, session_key, iv);
         logger.info("unionId: " + unionId);
+
         JSONObject jsonObject = JSON.parseObject(userInfo);
         String openid = jsonObject.get("openid").toString();
         String nickName = jsonObject.get("nickName").toString();
@@ -135,6 +149,9 @@ public class WechatService {
         String province = jsonObject.get("province").toString();
         String country = jsonObject.get("country").toString();
 
+        if (EmojiUtil.containsEmoji(nickName)) {
+            nickName = EmojiUtil.filterEmoji(nickName);
+        }
         if (StringUtils.equals(type, "C")) {
             WechatDTO wechatDTO = wechatInfoDAO.getWechatInfoByOpenid(openid);
             if (wechatDTO == null) {
@@ -146,8 +163,6 @@ public class WechatService {
                 User user = new User().username(openid).password(openid);
                 users.add(user);
                 Object easemobresult = easemobService.registerEasemobUser(users);
-                logger.info(easemobresult.toString());
-                // Assert.assertNotNull(easemobresult);
                 return returnMap;
             }
             returnMap.put("msg", "已经存在用户数据");
@@ -163,8 +178,9 @@ public class WechatService {
                 User user = new User().username(openid).password(openid);
                 users.add(user);
                 Object easemobresult = easemobService.registerEasemobUser(users);
-                logger.info(easemobresult.toString());
                 // Assert.assertNotNull(easemobresult);
+                // 在这里添加名片列表数据
+                // cardListDAO.saveCardToList(openid, );
                 return returnMap;
             }
             returnMap.put("msg", "已经存在用户数据");
@@ -300,6 +316,7 @@ public class WechatService {
         String uploadDirName = imgLocalPath.substring(imgLocalPath.lastIndexOf("/"), imgLocalPath.length());
         String random = RandomStringUtils.randomAlphanumeric(16);
         String fileName = random + ".jpg";
+        logger.info(imgLocalPath + "/", fileName);
         FileUtil.saveToImgByInputStream(inputStream, imgLocalPath + "/", fileName);
 
         return imgHost + uploadDirName + "/" + fileName;

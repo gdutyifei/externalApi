@@ -13,15 +13,14 @@ buildscript {
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
 apply plugin: 'idea'
-apply plugin: 'war'
+//apply plugin: 'war'
 apply plugin: 'org.springframework.boot'
 
-jar {
-    baseName = 'externalApi-rest-service'
-    version =  '0.1.0'
-}
+//jar {
+//    baseName = 'externalApi-rest-service'
+//    version = '0.1.0'
+//}
 
 repositories {
     mavenCentral()
@@ -29,6 +28,32 @@ repositories {
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+
+
+//指定JAR包 main方法
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.baiduAI.app.Application'
+    }
+}
+//依赖编译，然后打包JAR
+task taskJar(type:Jar, dependsOn: compileJava) {
+    from 'build/classes'
+    destinationDir = file('build/libs')
+}
+
+//清除上次的编译过的文件
+task clearPj(type:Delete){
+    delete 'build','target'
+}
+
+//把JAR复制到目标目录
+task release(type: Copy,dependsOn: [clearPj,taskJar]) {
+    from('build/libs') {
+        include '*.jar'
+    }
+    into ('target')
+}
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
@@ -47,6 +72,11 @@ dependencies {
     compile group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: '1.3.1'
     compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.3'
     compile('org.springframework.boot:spring-boot-starter-data-redis')
+    compile fileTree(dir: 'lib', include: '*.jar')
     runtime('mysql:mysql-connector-java')
     testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+springBoot {
+    executable = true
 }

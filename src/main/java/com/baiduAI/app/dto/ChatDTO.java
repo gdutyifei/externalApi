@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * Created by luoyifei on 2018/2/24.
@@ -36,7 +37,7 @@ public class ChatDTO extends BaseDTO {
 
     @NonNull
     @Column(name = "time")
-    private LocalDateTime time;
+    private Date time;
 
     @NonNull
     @Column(name = "mid")
@@ -75,11 +76,11 @@ public class ChatDTO extends BaseDTO {
         this.data = data;
     }
 
-    public LocalDateTime getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public void setTime(LocalDateTime time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 

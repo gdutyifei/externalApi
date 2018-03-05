@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * Created by luoyifei on 2018/2/20.
@@ -29,9 +30,9 @@ public class CardListDTO extends BaseDTO {
 
     @NonNull
     @Column(name = "follow_date")
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime follow_date;
+//    @JsonSerialize(using = LocalDateTimeSerializer.class)
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date follow_date;
 
     @NonNull
     @Column(name = "openid")
@@ -43,7 +44,11 @@ public class CardListDTO extends BaseDTO {
 
     @NonNull
     @Column(name = "way")
-    private String way;
+    private int way;
+
+    @NonNull
+    @Column(name = "relay_name")
+    private String relay_name;
 
     @Id
     public Long getId() {
@@ -54,11 +59,11 @@ public class CardListDTO extends BaseDTO {
         this.id = id;
     }
 
-    public LocalDateTime getFollow_date() {
+    public Date getFollow_date() {
         return follow_date;
     }
 
-    public void setFollow_date(LocalDateTime follow_date) {
+    public void setFollow_date(Date follow_date) {
         this.follow_date = follow_date;
     }
 
@@ -78,11 +83,19 @@ public class CardListDTO extends BaseDTO {
         this.sales_id = sales_id;
     }
 
-    public String getWay() {
+    public int getWay() {
         return way;
     }
 
-    public void setWay(String way) {
+    public void setWay(int way) {
         this.way = way;
+    }
+
+    public String getRelay_name() {
+        return relay_name;
+    }
+
+    public void setRelay_name(String relay_name) {
+        this.relay_name = relay_name;
     }
 }

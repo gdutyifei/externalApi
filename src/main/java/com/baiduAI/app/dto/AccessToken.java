@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * Created by luoyifei on 2018/2/19.
@@ -31,7 +32,7 @@ public class AccessToken extends BaseDTO {
 
     @NonNull
     @Column(name = "created_date")
-    private LocalDateTime created_date;
+    private Date created_date;
 
     @NonNull
     @Column(name = "created_by")
@@ -39,7 +40,7 @@ public class AccessToken extends BaseDTO {
 
     @NonNull
     @Column(name = "updated_date")
-    private LocalDateTime updated_date;
+    private Date updated_date;
 
     @NonNull
     @Column(name = "updated_by")
@@ -71,14 +72,6 @@ public class AccessToken extends BaseDTO {
         this.token_type = token_type;
     }
 
-    public LocalDateTime getCreated_date() {
-        return created_date;
-    }
-
-    public void setCreated_date(LocalDateTime created_date) {
-        this.created_date = created_date;
-    }
-
     public String getCreated_by() {
         return created_by;
     }
@@ -87,11 +80,19 @@ public class AccessToken extends BaseDTO {
         this.created_by = created_by;
     }
 
-    public LocalDateTime getUpdated_date() {
+    public Date getCreated_date() {
+        return created_date;
+    }
+
+    public void setCreated_date(Date created_date) {
+        this.created_date = created_date;
+    }
+
+    public Date getUpdated_date() {
         return updated_date;
     }
 
-    public void setUpdated_date(LocalDateTime updated_date) {
+    public void setUpdated_date(Date updated_date) {
         this.updated_date = updated_date;
     }
 

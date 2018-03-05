@@ -66,6 +66,18 @@ public class SalesInfoDTO extends BaseDTO {
     @Column(name = "photos")
     private String photos;
 
+    private String lng;
+
+    private String lat;
+
+    private String province;
+
+    private String city;
+
+    private String area;
+
+    private String company;
+
     @Id
     public Long getId() {
         return id;
@@ -161,5 +173,53 @@ public class SalesInfoDTO extends BaseDTO {
 
     public void setOpenid(String openid) {
         this.openid = openid;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
     }
 }

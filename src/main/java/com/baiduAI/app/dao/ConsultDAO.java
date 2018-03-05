@@ -10,6 +10,6 @@ import org.apache.ibatis.annotations.*;
 @Mapper
 public interface ConsultDAO {
 
-    @Insert("INSERT INTO consult_info(openid, openid_sales, product_id, content, created_date, created_by, updated_date, updated_by) VALUES(#{openid}, #{openid_sales}, #{product_id}, #{content}, NOW(), 'system', NOW(), 'system')")
-    void saveConsultInfo(@Param("openid") String openid, @Param("openid_sales") String openid_sales, @Param("product_id") Long product_id, @Param("content") String content);
+    @Insert("INSERT INTO consult_info(`openid`, `openid_sales`, `product_id`, `name`, `telphone`, `content`, created_date, created_by, updated_date, updated_by) VALUES(#{openid}, #{openid_sales}, #{product_id}, #{name}, #{telphone}, #{content}, NOW(), 'system', NOW(), 'system')")
+    void saveConsultInfo(@Param("openid") String openid, @Param("openid_sales") String openid_sales, @Param("product_id") Long product_id, @Param("name") String name, @Param("telphone") String telphone, @Param("content") String content);
 }

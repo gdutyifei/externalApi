@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.easemob:rest-java-sdk:1.0.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.easemob/rest-java-sdk/1.0.0/efb7ce7fb61f177e9fbffb6359e775dd8b3839c1/rest-java-sdk-1.0.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.easemob/rest-java-sdk/1.0.0/da39a3ee5e6b4b0d3255bfef95601890afd80709/rest-java-sdk-1.0.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

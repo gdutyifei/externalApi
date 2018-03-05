@@ -23,6 +23,7 @@ public class EasemobService {
 
     /**
      * 获取历史信息
+     *
      * @param timeStr
      * @return
      */
@@ -32,13 +33,14 @@ public class EasemobService {
         return responseHandler.handle(new EasemobAPI() {
             @Override
             public Object invokeEasemobAPI() throws ApiException {
-                return api.orgNameAppNameChatmessagesTimeGet(OrgInfo.ORG_NAME,OrgInfo.APP_NAME,TokenUtil.getAccessToken(),timeStr);
+                return api.orgNameAppNameChatmessagesTimeGet(OrgInfo.ORG_NAME, OrgInfo.APP_NAME, TokenUtil.getAccessToken(), timeStr);
             }
         });
     }
 
     /**
      * 注册环信用户
+     *
      * @param payload
      * @return
      */
@@ -48,7 +50,23 @@ public class EasemobService {
         return responseHandler.handle(new EasemobAPI() {
             @Override
             public Object invokeEasemobAPI() throws ApiException {
-                return api.orgNameAppNameUsersPost(OrgInfo.ORG_NAME,OrgInfo.APP_NAME, (RegisterUsers) payload,TokenUtil.getAccessToken());
+                return api.orgNameAppNameUsersPost(OrgInfo.ORG_NAME, OrgInfo.APP_NAME, (RegisterUsers) payload, TokenUtil.getAccessToken());
+            }
+        });
+    }
+
+    /**
+     * 获取环信用户
+     * @param userName
+     * @return
+     */
+    public Object getIMUserByUserName(final String userName) {
+        ResponseHandler responseHandler = new ResponseHandler();
+        UsersApi api = new UsersApi();
+        return responseHandler.handle(new EasemobAPI() {
+            @Override
+            public Object invokeEasemobAPI() throws ApiException {
+                return api.orgNameAppNameUsersUsernameGet(OrgInfo.ORG_NAME, OrgInfo.APP_NAME, TokenUtil.getAccessToken(), userName);
             }
         });
     }

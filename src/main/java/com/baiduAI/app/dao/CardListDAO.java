@@ -14,8 +14,8 @@ import java.util.List;
 @Mapper
 public interface CardListDAO {
 
-    @Insert("INSERT INTO card_list(follow_date, openid, sales_id, way, created_date, created_by, updated_date, updated_by) VALUES(NOW(), #{openid}, #{sales_id}, #{way}, NOW(), 'system', NOW(), 'system')")
-    void saveCardToList(@Param("openid") String openid, @Param("sales_id") Long sales_id, @Param("way") String way);
+    @Insert("INSERT INTO card_list(follow_date, openid, sales_id, way, relay_name, created_date, created_by, updated_date, updated_by) VALUES(NOW(), #{openid}, #{sales_id}, #{way}, #{relay_name}, NOW(), 'system', NOW(), 'system')")
+    void saveCardToList(@Param("openid") String openid, @Param("sales_id") Long sales_id, @Param("way") int way, @Param("relay_name") String relay_name);
 
     @Select("SELECT * FROM card_list WHERE openid=#{openid} AND sales_id=#{sales_id}")
     CardListDTO getCardByOpenidAndSalesId(@Param("openid") String openid, @Param("sales_id") Long sales_id);

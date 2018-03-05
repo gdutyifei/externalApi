@@ -66,7 +66,7 @@ public class WeChatSystemContext {
             accessToken = jo.get("access_token").toString();
             accessTokenDAO.saveAccessToken(accessToken, tokenType);
         } else {
-            long updatedTime = Date.from(accessTokenInfo.getUpdated_date().atZone(ZoneId.systemDefault()).toInstant()).getTime();
+            long updatedTime = accessTokenInfo.getUpdated_date().getTime();
             long time = new Date().getTime();
 
             //如果当前记录时间为0

@@ -25,7 +25,7 @@ public class ChatApi {
     }
 
     @RequestMapping("/getChatListByOpenid")
-    public Map<String, Object> getChatListByOpenid(@Param("from") String from, @Param("to") String to) {
-        return chatService.getChatListByOpenid(from, to);
+    public Map<String, Object> getChatListByOpenid(@Param("from") String from, @Param("to") String to, @Param("page") Integer page, @Param("type") String type, @Param("salesId") Long salesId) {
+        return chatService.getChatListByOpenid(from, to, page, type, salesId);
     }
 }
